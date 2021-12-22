@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://src/player/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/meteor/meteor.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/world/world.gd" type="Script" id=3]
+[ext_resource path="res://src/scripts/entity_spawner.gd" type="Script" id=4]
+[ext_resource path="res://src/points/points.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/Backgrounds/black.png" type="Texture" id=6]
+[ext_resource path="res://src/shield_powerup/shield_powerup.tscn" type="PackedScene" id=7]
+
+[node name="World" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 521, 312 )
+collision_mask = 2
+
+[node name="MeteorSpawner" type="YSort" parent="."]
+script = ExtResource( 4 )
+entity_scene = ExtResource( 2 )
+spawn_rate = 0.5
+spawn_rate_score_modifier = 0.1
+
+[node name="PointsSpawner" type="YSort" parent="."]
+script = ExtResource( 4 )
+entity_scene = ExtResource( 5 )
+spawn_rate = 5.0
+
+[node name="ShieldPowerupsSpawner" type="YSort" parent="."]
+script = ExtResource( 4 )
+entity_scene = ExtResource( 7 )
+spawn_rate = 23.0
+spawn_rate_randomness = 0.5

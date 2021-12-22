@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://src/shield_powerup/shield_powerup.gd" type="Script" id=1]
+[ext_resource path="res://assets/PNG/Power-ups/powerupBlue_shield.png" type="Texture" id=2]
+[ext_resource path="res://src/scripts/entity_component.gd" type="Script" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 24.0
+
+[node name="ShieldPowerup" type="Area2D"]
+collision_layer = 0
+script = ExtResource( 1 )
+speed = 400
+speed_variability = 0
+rot_variability = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="EntityComponent" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[connection signal="body_entered" from="." to="." method="_on_ShieldPowerup_body_entered"]

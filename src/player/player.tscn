@@ -1,0 +1,72 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://src/player/player.gd" type="Script" id=1]
+[ext_resource path="res://assets/PNG/playerShip2_orange.png" type="Texture" id=2]
+[ext_resource path="res://src/player/laser/laser.tscn" type="PackedScene" id=3]
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Ship:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=1]
+resource_name = "hurt"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Ship:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.15, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0.25098, 0.25098, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.25098, 0.25098, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[node name="Player" type="KinematicBody2D"]
+z_index = 1
+collision_mask = 6
+script = ExtResource( 1 )
+laser_scene = ExtResource( 3 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -32, -37, -7, -48, 20, 0, -7, 48, -32, 37, -25, 0 )
+
+[node name="Ship" type="Sprite" parent="."]
+rotation = 1.5708
+texture = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 2 )
+anims/hurt = SubResource( 1 )
+
+[node name="PowerupDetector" type="Area2D" parent="."]
+collision_mask = 4
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PowerupDetector"]
+position = Vector2( 6.95192, -1.5 )
+scale = Vector2( 1.65865, 1.26953 )
+polygon = PoolVector2Array( -32, -37, -7, -48, 20, 0, -7, 48, -32, 37, -25, 0 )
+
+[node name="ShootCooldown" type="Timer" parent="."]
+one_shot = true
+
+[node name="LaserOrigin" type="Position2D" parent="."]
+position = Vector2( 37, 0 )
+
+[node name="Shield" type="Sprite" parent="."]
+rotation = 1.5708
+
+[connection signal="timeout" from="ShootCooldown" to="." method="_on_ShootCooldown_timeout"]
